@@ -83,11 +83,8 @@ namespace RiktigaBanken
                                     break;
                             }
                         }
-                        
-                        
-                        
                         break;
-                        
+
                     case 2:
 
                         // Skapa nytt kund+konto - createAccount(double) för konto double = pengar - Christian
@@ -95,7 +92,7 @@ namespace RiktigaBanken
 
                     case 3:
 
-                        
+
 
                         break;
 
