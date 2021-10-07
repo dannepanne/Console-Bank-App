@@ -103,7 +103,16 @@ namespace RiktigaBanken
 
         public static void Interest() //static? void? //Zacharias
         {
-
+            Console.WriteLine("Mata in ditt saldo");
+            double saldo = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Mata in din räntesats");
+            double ränta = Convert.ToDouble(Console.ReadLine());
+            double räntaBetald = saldo * (ränta / 100);
+            double totalPI = ränta + räntaBetald;
+            Console.WriteLine("Saldo = " + saldo);
+            Console.WriteLine("Ränta = " + ränta + "%");
+            Console.WriteLine("Ränta betald = " + räntaBetald);
+            Console.WriteLine("Totala summan = " + saldo + ränta);
         }
 
         public static async Task RemoveCustomerAsync(int index) //sttic.... //Christoffer
@@ -113,14 +122,48 @@ namespace RiktigaBanken
         }
 
 
-        public static void AddMoney()//Zacharias
+         public static void DepositMoney(SavingsAccount acc)//Zacharias
         {
-
+            
+            Console.WriteLine("Hur mycket vill du sätta in?");
+            int depositAmount = int.Parse(Console.ReadLine());
+            if (depositAmount < 0)
+            {
+                Console.WriteLine("Du kan ej sätta in ett värde under 0");
+            }
+            acc.setBalance(acc.getBalance() + depositAmount);
+            Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
+            
+            
         }
 
-        public static void RemoveMoney()
+        public static void WithdrawMoney(SavingsAccount acc)//Zacharias
         {
+            Console.WriteLine("\n Hur mycket vill du ta ut?");
+            Console.WriteLine("\n Välj mellan 500, 1000, 5000, 10000");
+            int withdrawalAmount = int.Parse(Console.ReadLine());
+            if (withdrawalAmount != 500 && withdrawalAmount != 1000 && withdrawalAmount != 5000 && withdrawalAmount != 10000)
+            {
+                Console.WriteLine("Felaktig inmatning, var god försök igen");
+            }
+            if (withdrawalAmount < 0)
+            {
+                Console.WriteLine("Du kan ej ta ut ut ett värde under 0");
+            }
+            if (acc.getBalance() < withdrawalAmount)
+            {
+                Console.WriteLine("Du har ej tillräckligt saldo för att ta ut");
+            }
+            else
+            {
+                Console.WriteLine("Var god ta pengarna");
+                acc.setBalance(acc.getBalance() - withdrawalAmount);
+                Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
 
+            }
+    
+
+        }
         }
 
         public static void CustomerMenuMethod()
@@ -188,4 +231,4 @@ namespace RiktigaBanken
             }
         }
     }
-}
+

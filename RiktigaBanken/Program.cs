@@ -12,8 +12,8 @@ namespace RiktigaBanken
             Console.Clear();
 
             BankMenu.Menu();
-     
-        
+            BankLogic.WriteText();
+
 
         }
     }

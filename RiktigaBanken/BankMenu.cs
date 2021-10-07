@@ -22,9 +22,9 @@ namespace RiktigaBanken
                 switch (choice)
                 {
                     case 1:
-
+                    
                         BankLogic.CustomerMenuMethod();
-
+                    
                         break;
 
                     case 2:
