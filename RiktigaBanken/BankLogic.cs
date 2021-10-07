@@ -48,8 +48,10 @@ namespace RiktigaBanken
             {
                 return false;
             }
-            customerList.Add(new Customer(fname, lname, pNr));
-
+            Customer newCust = new Customer(fname, lname, pNr);
+            newCust.accounts.Add(BankLogic.CreateAccount(200));
+            customerList.Add(newCust);
+            
             return true;
         }
 

@@ -38,9 +38,13 @@ namespace RiktigaBanken
                         long pnr;
                         long.TryParse(Console.ReadLine(), out pnr);
                         var retbool = blogic.AddCustomer(fname, lname, pnr);
-
+                        
+                        BankLogic.WriteText();
                         if (retbool)
+                        {
                             Console.WriteLine("Kund tillagd: " + fname + lname);
+                            
+                        }
                         else
                             Console.WriteLine("Kund finns redan.");
 
