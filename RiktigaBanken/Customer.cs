@@ -39,7 +39,7 @@ namespace RiktigaBanken
         }
         public string WriteToString()
         {
-            string retur = $"{this.customerSureName}###{this.customerLastName}###{this.customerPNR}###{accounts[0].ToString()}";
+            string retur = $"{this.customerSureName}###{this.customerLastName}###{this.customerPNR}###{accounts[0].getBalance()}";
             return retur.ToString();
         }
 
