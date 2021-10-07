@@ -92,16 +92,6 @@ namespace RiktigaBanken
             customerList[customerIndex].accounts.RemoveAt(accountIndex);
         }
 
-        public static void RemoveAccount(int customerIndex) 
-        {
-            double sum = 0;
-            foreach (var account in customerList[customerIndex].accounts)
-            {
-                sum = +account.getBalance();
-            }
-            Console.WriteLine($"Konton avslutade, totalt uttag i samband med detta är {sum}");
-            customerList.RemoveAt(customerIndex);
-        }
 
         public static async Task ChangeName(string newFirstName, string newLastName, int customerIndex) //static? void? //Christoffer
         {
@@ -129,6 +119,12 @@ namespace RiktigaBanken
 
         public static async Task RemoveCustomerAsync(int index) //sttic.... //Christoffer
         {
+            double sum = 0;
+            foreach (var account in customerList[index].accounts)
+            {
+                sum = +account.getBalance();
+            }
+            Console.WriteLine($"Konton avslutade, totalt uttag i samband med detta är {sum}");
             customerList.RemoveAt(index);
             await WriteText();
         }

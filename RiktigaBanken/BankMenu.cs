@@ -59,7 +59,7 @@ namespace RiktigaBanken
                         Int32.TryParse(Console.ReadLine(), out customerChoice);
                         if (customerChoice > 0 && customerChoice < BankLogic.customerList.Count + 1)
                         {
-                            BankLogic.RemoveAccount(customerChoice +1);
+                            BankLogic.RemoveCustomerAsync(customerChoice +1);
                         }
                         else
                         { Console.WriteLine("FELFELFELFELFEL"); }
