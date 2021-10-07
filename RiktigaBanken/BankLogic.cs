@@ -74,7 +74,7 @@ namespace RiktigaBanken
             return newAcc;
 
         }
-        public  SavingsAccount CreateAccount(double money, long pnr)
+        public static SavingsAccount CreateAccount(double money)
         {
 
             int accountnumber = 1000 + usedNumbers.Count + 1;
