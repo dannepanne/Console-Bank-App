@@ -6,8 +6,11 @@ namespace RiktigaBanken
     {
         static void Main(string[] args)
         {
-            
-            BankLogic.ReadText();
+            try
+            { BankLogic.ReadText(); }
+            catch (Exception e)
+            { Console.WriteLine($"Kan inte öpna Kundlista.txt för att {e}"); }
+            Console.ReadKey();
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.Clear();
