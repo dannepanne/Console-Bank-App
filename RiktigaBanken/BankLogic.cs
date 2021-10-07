@@ -32,13 +32,13 @@ namespace RiktigaBanken
             {
                 string[] vektor = item.Split(new string[] { "###" }, StringSplitOptions.None);
                 List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[3])) };
-                Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);               
+                Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
                 customerList.Add(newCustomer);
             }
 
         }
 
-        
+
 
         public bool AddCustomer(string fname, string lname, long pNr)
         {
@@ -55,7 +55,7 @@ namespace RiktigaBanken
 
 
         public static List<int> usedNumbers = new List<int>();
-        public  SavingsAccount CreateAccount()
+        public SavingsAccount CreateAccount()
         {
             int accountnumber = 1000;
             foreach (Customer customer in BankLogic.customerList)
@@ -92,7 +92,7 @@ namespace RiktigaBanken
         }
 
 
-        public static async Task ChangeName(string newFirstName,string newLastName, int customerIndex) //static? void? //Christoffer
+        public static async Task ChangeName(string newFirstName, string newLastName, int customerIndex) //static? void? //Christoffer
         {
             customerList[customerIndex].customerSureName = newFirstName;
             customerList[customerIndex].customerLastName = newLastName;
@@ -122,9 +122,9 @@ namespace RiktigaBanken
         }
 
 
-         public static void DepositMoney(SavingsAccount acc)//Zacharias
+        public static void DepositMoney(SavingsAccount acc)//Zacharias
         {
-            
+
             Console.WriteLine("Hur mycket vill du sätta in?");
             int depositAmount = int.Parse(Console.ReadLine());
             if (depositAmount < 0)
@@ -133,8 +133,8 @@ namespace RiktigaBanken
             }
             acc.setBalance(acc.getBalance() + depositAmount);
             Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
-            
-            
+
+
         }
 
         public static void WithdrawMoney(SavingsAccount acc)//Zacharias
@@ -161,74 +161,13 @@ namespace RiktigaBanken
                 Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
 
             }
-    
-
-        }
-        }
-
-        public static void CustomerMenuMethod()
-        {
-            Console.WriteLine("Välj en befintlig kund:");
-            int number = 1;
-            foreach (var customer in BankLogic.customerList)
-            {
-
-                Console.WriteLine($"({number}) {customer.ToString()}");
-                number++;
-            }
-            int customerChoice = 0;
-            Int32.TryParse(Console.ReadLine(), out customerChoice);
-            if (customerChoice > 0 && customerChoice < BankLogic.customerList.Count +1)
-            {
-                Console.Clear();
-                Console.WriteLine($"\n\tDu har valt \n\t{BankLogic.customerList[customerChoice - 1].ToString()}\n\tVad vill du göra? \n\t\t(1)Se konton och sätta in/ta ut pengar \n\t\t(2) Ändra namn på kunden");
-                int customerEdit;
-                Int32.TryParse(Console.ReadLine(), out customerEdit);
-                switch (customerEdit)
-                {
-                    case 1:
-
-                        for (int i = 0; i < BankLogic.customerList[customerChoice - 1].accounts.Count; i++)
-                        {
-                            Console.WriteLine($"({i + 1})Konto {BankLogic.customerList[customerChoice - 1].accounts[i].accountNumber.ToString()} innehåller följande mängd pengar {BankLogic.customerList[customerChoice - 1].accounts[i].getBalance()}");
-                        }
-
-                        Console.WriteLine("\n\tVilket göra en insättning till eller uttag från?");
-                        int addRemove;
-                        Int32.TryParse(Console.ReadLine(), out addRemove);
-                        if (addRemove > 0 && addRemove < BankLogic.customerList[customerChoice - 1].accounts.Count)
-                        {
-                            int addRemove2;
-                            Int32.TryParse(Console.ReadLine(), out addRemove2);
-                            if (addRemove2 == 1)
-                            {
-
-                            }
-                            else if (addRemove2 == 2)
-                            {
-
-                            }
-                            else
-                                Console.WriteLine("FELFELFELFEL");
-
-                        }
-                        break;
-
-                    case 2:
-                        Console.WriteLine("\n\tSkriv förnamn:");
-                        string newSurname = Console.ReadLine();
-                        Console.WriteLine("\n\tSkriv efternamn:");
-                        string newLastname = Console.ReadLine();
-                        ChangeName(newSurname, newLastname, customerChoice - 1);
-                        break;
 
 
-                    default:
-                        Console.WriteLine("\n\tFelaktigt val");
-                        Console.ReadKey();
-                        break;
-                }
-            }
         }
     }
+
+
+}
+        
+    
 

@@ -23,7 +23,7 @@ namespace RiktigaBanken
                 {
                     case 1:
                     
-                        BankLogic.CustomerMenuMethod();
+                        CustomerMenuMethod();
                     
                         break;
 
@@ -74,6 +74,70 @@ namespace RiktigaBanken
                 }
 
             }
-        }
+
+
+            static void CustomerMenuMethod()
+            {
+                Console.WriteLine("Välj en befintlig kund:");
+                int number = 1;
+                foreach (var customer in BankLogic.customerList)
+                {
+
+                    Console.WriteLine($"({number}) {customer.ToString()}");
+                    number++;
+                }
+                int customerChoice = 0;
+                Int32.TryParse(Console.ReadLine(), out customerChoice);
+                if (customerChoice > 0 && customerChoice < BankLogic.customerList.Count + 1)
+                {
+                    Console.Clear();
+                    Console.WriteLine($"\n\tDu har valt \n\t{BankLogic.customerList[customerChoice - 1].ToString()}\n\tVad vill du göra? \n\t\t(1)Se konton och sätta in/ta ut pengar \n\t\t(2) Ändra namn på kunden");
+                    int customerEdit;
+                    Int32.TryParse(Console.ReadLine(), out customerEdit);
+                    switch (customerEdit)
+                    {
+                        case 1:
+
+                            for (int i = 0; i < BankLogic.customerList[customerChoice - 1].accounts.Count; i++)
+                            {
+                                Console.WriteLine($"({i + 1})Konto {BankLogic.customerList[customerChoice - 1].accounts[i].accountNumber.ToString()} innehåller följande mängd pengar {BankLogic.customerList[customerChoice - 1].accounts[i].getBalance()}");
+                            }
+
+                            Console.WriteLine("\n\tVilket göra en insättning till eller uttag från?");
+                            int addRemove;
+                            Int32.TryParse(Console.ReadLine(), out addRemove);
+                            if (addRemove > 0 && addRemove < BankLogic.customerList[customerChoice - 1].accounts.Count)
+                            {
+                                int addRemove2;
+                                Int32.TryParse(Console.ReadLine(), out addRemove2);
+                                if (addRemove2 == 1)
+                                {
+
+                                }
+                                else if (addRemove2 == 2)
+                                {
+
+                                }
+                                else
+                                    Console.WriteLine("FELFELFELFEL");
+
+                            }
+                            break;
+
+                        case 2:
+                            Console.WriteLine("\n\tSkriv förnamn:");
+                            string newSurname = Console.ReadLine();
+                            Console.WriteLine("\n\tSkriv efternamn:");
+                            string newLastname = Console.ReadLine();
+                            BankLogic.ChangeName(newSurname, newLastname, customerChoice - 1);
+                            break;
+
+
+                        default:
+                            Console.WriteLine("\n\tFelaktigt val");
+                            Console.ReadKey();
+                            break;
+                    }
+                }
     }
 }
