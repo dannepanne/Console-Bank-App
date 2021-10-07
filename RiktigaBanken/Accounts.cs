@@ -17,10 +17,14 @@ namespace RiktigaBanken
 
 
         public double getBalance()
+           
         {
             return accountBalance;
         }
-
+        public void setBalance(double newBalance)
+        {
+            accountBalance = newBalance;
+        }
         }
         class SavingsAccount : Account
         {

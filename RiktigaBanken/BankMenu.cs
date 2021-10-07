@@ -23,7 +23,7 @@ namespace RiktigaBanken
                 {
                     case 1:
                         // Skriva ut alla kunder på skärmen + visa detaljer per kund (konto) - DANIEL
-                        
+                        BankLogic.WriteText();
                         break;
                         
                     case 2:
@@ -42,7 +42,7 @@ namespace RiktigaBanken
 
                         break;
 
-                    case X:
+                    case 5:
                         Console.WriteLine("Avslutar");
                         bankmenu = false;
                         break;
