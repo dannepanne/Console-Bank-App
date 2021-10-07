@@ -103,7 +103,7 @@ namespace RiktigaBanken
                                 Console.WriteLine($"({i + 1})Konto {BankLogic.customerList[customerChoice - 1].accounts[i].accountNumber.ToString()} innehåller följande mängd pengar {BankLogic.customerList[customerChoice - 1].accounts[i].getBalance()}");
                             }
 
-                            Console.WriteLine("\n\tVilket göra en insättning till eller uttag från?");
+                            Console.WriteLine("\n\tVilket konto vill du göra en insättning till eller uttag från?");
                             int addRemove;
                             Int32.TryParse(Console.ReadLine(), out addRemove);
                             if (addRemove > 0 && addRemove < BankLogic.customerList[customerChoice - 1].accounts.Count)
