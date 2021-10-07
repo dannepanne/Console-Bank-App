@@ -102,26 +102,27 @@ namespace RiktigaBanken
                             {
                                 Console.WriteLine($"({i + 1})Konto {BankLogic.customerList[customerChoice - 1].accounts[i].accountNumber.ToString()} innehåller följande mängd pengar {BankLogic.customerList[customerChoice - 1].accounts[i].getBalance()}");
                             }
-
                             Console.WriteLine("\n\tVilket konto vill du göra en insättning till eller uttag från?");
+                            int accPicker;
+                            Int32.TryParse(Console.ReadLine(), out accPicker);
                             int addRemove;
+                            Console.WriteLine("\n\t Vill du göra: \n\t(1)Insättning\n\t(2)Uttag");
                             Int32.TryParse(Console.ReadLine(), out addRemove);
-                            if (addRemove > 0 && addRemove < BankLogic.customerList[customerChoice - 1].accounts.Count)
+                            
+                            if (accPicker > 0 && accPicker < BankLogic.customerList[customerChoice - 1].accounts.Count +1)
                             {
-                                int addRemove2;
-                                Int32.TryParse(Console.ReadLine(), out addRemove2);
-                                if (addRemove2 == 1)
+                                if (addRemove == 1)
                                 {
-
+                                    BankLogic.DepositMoney(BankLogic.customerList[customerChoice - 1].accounts[accPicker - 1]);
                                 }
-                                else if (addRemove2 == 2)
+                                else if (addRemove == 2)
                                 {
-
+                                    BankLogic.WithdrawMoney(BankLogic.customerList[customerChoice - 1].accounts[accPicker - 1]);
                                 }
                                 else
                                     Console.WriteLine("FELFELFELFEL");
-
                             }
+
                             break;
 
                         case 2:

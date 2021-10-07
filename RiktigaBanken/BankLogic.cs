@@ -122,7 +122,7 @@ namespace RiktigaBanken
         }
 
 
-        public static void DepositMoney(SavingsAccount acc)//Zacharias
+        public static void DepositMoney(Account acc)//Zacharias
         {
 
             Console.WriteLine("Hur mycket vill du sätta in?");
@@ -137,7 +137,7 @@ namespace RiktigaBanken
 
         }
 
-        public static void WithdrawMoney(SavingsAccount acc)//Zacharias
+        public static void WithdrawMoney(Account acc)//Zacharias
         {
             Console.WriteLine("\n Hur mycket vill du ta ut?");
             Console.WriteLine("\n Välj mellan 500, 1000, 5000, 10000");
