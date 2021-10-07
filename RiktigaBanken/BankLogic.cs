@@ -88,18 +88,24 @@ namespace RiktigaBanken
 
         public static void RemoveAccount(int customerIndex, int accountIndex) //Christoffer
         {
+            
             customerList[customerIndex].accounts.RemoveAt(accountIndex);
         }
 
-
-        public static async Task ChangeName(string newFirstName, string newLastName, int customerIndex) //static? void? //Christoffer
+        public static void RemoveAccount(int customerIndex) 
         {
             double sum = 0;
             foreach (var account in customerList[customerIndex].accounts)
             {
-                sum =+ account.getBalance();
+                sum = +account.getBalance();
             }
             Console.WriteLine($"Konton avslutade, totalt uttag i samband med detta är {sum}");
+            customerList.RemoveAt(customerIndex);
+        }
+
+        public static async Task ChangeName(string newFirstName, string newLastName, int customerIndex) //static? void? //Christoffer
+        {
+            
             customerList[customerIndex].customerSureName = newFirstName;
             customerList[customerIndex].customerLastName = newLastName;
 

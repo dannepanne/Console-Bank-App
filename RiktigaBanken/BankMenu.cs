@@ -45,10 +45,26 @@ namespace RiktigaBanken
                             Console.WriteLine("Kund finns redan.");
 
                         break;
-
+                        
                     case 3:
+                        int number = 1;
+                        Console.WriteLine("Vilken kund med tillhörande konto/n ska avslutas?");
+                        foreach (var customer in BankLogic.customerList)
+                        {
 
-                        break;
+                            Console.WriteLine($"({number}) {customer.ToString()}");
+                            number++;
+                        }
+                        int customerChoice = 0;
+                        Int32.TryParse(Console.ReadLine(), out customerChoice);
+                        if (customerChoice > 0 && customerChoice < BankLogic.customerList.Count + 1)
+                        {
+                            BankLogic.RemoveAccount(customerChoice +1);
+                        }
+                        else
+                        { Console.WriteLine("FELFELFELFELFEL"); }
+
+                            break;
 
                     case 4:
                         Console.WriteLine("Avslutar");
