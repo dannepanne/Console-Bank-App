@@ -15,7 +15,7 @@ namespace RiktigaBanken
             //DANIEL
             while (bankmenu)
             {
-                Console.WriteLine("\n\tVälkommen till Banken, vad vill du göra idag? \n\t(1) Visa kunder och sätt sätt in/ ta ut pengar \n\t(2) Skapa konto \n\t(3) Avsluta och skriv ut saldo \n\t(4) Avsluta");
+                Console.WriteLine("\n\tVälkommen till Banken, vad vill du göra idag? \n\t(1) Visa kunder och sätt sätt in/ ta ut pengar \n\t(2) Skapa konto \n\t(3) Avsluta och skriv ut saldo \n\t(4) Avsluta och spara");
                 int choice = 0;
                 Int32.TryParse(Console.ReadLine(), out choice);
 
@@ -71,7 +71,8 @@ namespace RiktigaBanken
                             break;
 
                     case 4:
-                        Console.WriteLine("Avslutar");
+                        Console.WriteLine("Avslutar och sparar till Kundlista.txt");
+                        BankLogic.WriteText();
                         bankmenu = false;
                         break;
 
