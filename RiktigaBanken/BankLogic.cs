@@ -18,10 +18,10 @@ namespace RiktigaBanken
             string[] rader = new string[customerList.Count];
             foreach (var item in customerList)
             {
-                rader[count] = item.ToString();
+                rader[count] = item.WriteToString();
                 count++;
             }
-            await File.WriteAllLinesAsync("NyKundLista.txt", rader);
+            await File.WriteAllLinesAsync("Kundista.txt", rader);
         }
 
         public static void ReadText()
@@ -30,9 +30,9 @@ namespace RiktigaBanken
 
             foreach (var item in lines)
             {
-                List<SavingsAccount> newAccount = new List<SavingsAccount>();
                 string[] vektor = item.Split(new string[] { "###" }, StringSplitOptions.None);
-                Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
+                List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[3])) };
+                Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);               
                 customerList.Add(newCustomer);
             }
 
@@ -86,15 +86,18 @@ namespace RiktigaBanken
 
 
 
-        public static void RemoveAccount() //Christoffer
+        public static void RemoveAccount(int customerIndex, int accountIndex) //Christoffer
         {
-
+            customerList[customerIndex].accounts.RemoveAt(accountIndex);
         }
 
 
-        public static void ChangeName() //static? void? //Christoffer
+        public static async Task ChangeName(string newFirstName,string newLastName, int customerIndex) //static? void? //Christoffer
         {
+            customerList[customerIndex].customerSureName = newFirstName;
+            customerList[customerIndex].customerSureName = newLastName;
 
+            await WriteText();
         }
 
 
@@ -103,9 +106,10 @@ namespace RiktigaBanken
 
         }
 
-        public static void RemoveCustomer() //sttic.... //Christoffer
+        public static async Task RemoveCustomerAsync(int index) //sttic.... //Christoffer
         {
-
+            customerList.RemoveAt(index);
+            await WriteText();
         }
 
 
@@ -114,7 +118,7 @@ namespace RiktigaBanken
 
         }
 
-        public static void RemoveMoney()//Zacharias
+        public static void RemoveMoney()
         {
 
         }
