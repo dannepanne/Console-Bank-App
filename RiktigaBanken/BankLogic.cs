@@ -21,7 +21,7 @@ namespace RiktigaBanken
                 rader[count] = item.WriteToString();
                 count++;
             }
-            await File.WriteAllLinesAsync("Kundista.txt", rader);
+            await File.WriteAllLinesAsync("Kundlista.txt", rader);
         }
 
         public static void ReadText()
