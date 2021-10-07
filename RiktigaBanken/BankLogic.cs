@@ -31,6 +31,9 @@ namespace RiktigaBanken
             foreach (var item in lines)
             {
                 List<SavingsAccount> newAccount = new List<SavingsAccount>();
+                newAccount.Add(CreateAccount(200.0));
+                newAccount.Add(CreateAccount(200.0));
+                newAccount.Add(CreateAccount(200.0));
                 string[] vektor = item.Split(new string[] { "###" }, StringSplitOptions.None);
                 Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
                 customerList.Add(newCustomer);
@@ -86,15 +89,18 @@ namespace RiktigaBanken
 
 
 
-        public static void RemoveAccount() //Christoffer
+        public static void RemoveAccount(int customerIndex, int accountIndex) //Christoffer
         {
-
+            customerList[customerIndex].accounts.RemoveAt(accountIndex);
         }
 
 
-        public static void ChangeName() //static? void? //Christoffer
+        public static async Task ChangeName(string newFirstName,string newLastName, int customerIndex) //static? void? //Christoffer
         {
+            customerList[customerIndex].customerSureName = newFirstName;
+            customerList[customerIndex].customerSureName = newLastName;
 
+            await WriteText();
         }
 
 
@@ -103,9 +109,10 @@ namespace RiktigaBanken
 
         }
 
-        public static void RemoveCustomer() //sttic.... //Christoffer
+        public static async Task RemoveCustomerAsync(int index) //sttic.... //Christoffer
         {
-
+            customerList.RemoveAt(index);
+            await WriteText();
         }
 
 

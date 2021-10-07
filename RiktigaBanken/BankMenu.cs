@@ -23,9 +23,9 @@ namespace RiktigaBanken
                 {
                     case 1:
                         // Skriva ut alla kunder på skärmen + visa detaljer per kund (konto) - DANIEL
-                        
+
                         break;
-                        
+
                     case 2:
 
                         // Skapa nytt kund+konto - createAccount(double) för konto double = pengar - Christian
@@ -33,7 +33,7 @@ namespace RiktigaBanken
 
                     case 3:
 
-                        
+
 
                         break;
 
