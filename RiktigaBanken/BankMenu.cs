@@ -15,7 +15,7 @@ namespace RiktigaBanken
             //DANIEL
             while (bankmenu)
             {
-                Console.WriteLine("\n\tVälkommen till Banken, vad vill du göra idag? \n\t(1) Visa kunder \n\t(2) Öppna ett konto \n\t(3) Avsluta och skriv ut saldo \n\t(4) Avsluta");
+                Console.WriteLine("\n\tVälkommen till Banken, vad vill du göra idag? \n\t(1) Visa kunder \n\t(2) Skapa konto \n\t(3) Avsluta och skriv ut saldo \n\t(4) Avsluta");
                 int choice = 0;
                 Int32.TryParse(Console.ReadLine(), out choice);
 
@@ -29,8 +29,25 @@ namespace RiktigaBanken
                     case 2:
 
                         // Skapa nytt kund+konto - createAccount(double) för konto double = pengar - Christian
-                        break;
+                        Console.Write("Förnamn: ");
+                        var fname = Console.ReadLine();
+                        Console.Write("Efternamn: ");
+                        var lname = Console.ReadLine();
+                        Console.Write("Personnummer (YYMMDDNNNN): ");
+                        long pnr;
+                        long.TryParse(Console.ReadLine(), out pnr);
+                        var retbool = blogic.AddCustomer(fname, lname, pnr);
 
+                        if (retbool)
+                            Console.WriteLine("Kund tillagd: " + fname + lname);
+                        else
+                            Console.WriteLine("Kund finns redan.");
+                        
+                        
+                        
+
+
+                        break;
                     case 3:
 
                         
@@ -42,7 +59,7 @@ namespace RiktigaBanken
 
                         break;
 
-                    case X:
+                    case 9:
                         Console.WriteLine("Avslutar");
                         bankmenu = false;
                         break;

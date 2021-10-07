@@ -55,7 +55,7 @@ namespace RiktigaBanken
 
 
         public static List<int> usedNumbers = new List<int>();
-        public static SavingsAccount CreateAccount()
+        public  SavingsAccount CreateAccount()
         {
             int accountnumber = 1000;
             foreach (Customer customer in BankLogic.customerList)
@@ -74,7 +74,7 @@ namespace RiktigaBanken
             return newAcc;
 
         }
-        public static SavingsAccount CreateAccount(double money)
+        public  SavingsAccount CreateAccount(double money, long pnr)
         {
 
             int accountnumber = 1000 + usedNumbers.Count + 1;
