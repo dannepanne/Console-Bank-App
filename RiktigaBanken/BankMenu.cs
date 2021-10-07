@@ -22,9 +22,9 @@ namespace RiktigaBanken
                 switch (choice)
                 {
                     case 1:
-                    
+
                         CustomerMenuMethod();
-                    
+
                         break;
 
                     case 2:
@@ -43,9 +43,9 @@ namespace RiktigaBanken
                             Console.WriteLine("Kund tillagd: " + fname + lname);
                         else
                             Console.WriteLine("Kund finns redan.");
-                        
-                        
-                        
+
+
+
 
 
                         break;
@@ -139,5 +139,7 @@ namespace RiktigaBanken
                             break;
                     }
                 }
+            }
+        }
     }
 }
