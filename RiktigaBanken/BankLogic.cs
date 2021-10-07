@@ -95,7 +95,7 @@ namespace RiktigaBanken
         public static async Task ChangeName(string newFirstName,string newLastName, int customerIndex) //static? void? //Christoffer
         {
             customerList[customerIndex].customerSureName = newFirstName;
-            customerList[customerIndex].customerSureName = newLastName;
+            customerList[customerIndex].customerLastName = newLastName;
 
             await WriteText();
         }
