@@ -94,6 +94,12 @@ namespace RiktigaBanken
 
         public static async Task ChangeName(string newFirstName, string newLastName, int customerIndex) //static? void? //Christoffer
         {
+            double sum = 0;
+            foreach (var account in customerList[customerIndex].accounts)
+            {
+                sum =+ account.getBalance();
+            }
+            Console.WriteLine($"Konton avslutade, totalt uttag i samband med detta är {sum}");
             customerList[customerIndex].customerSureName = newFirstName;
             customerList[customerIndex].customerLastName = newLastName;
 
