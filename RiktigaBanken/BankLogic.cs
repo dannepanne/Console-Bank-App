@@ -135,7 +135,7 @@ namespace RiktigaBanken
             }
             int customerChoice = 0;
             Int32.TryParse(Console.ReadLine(), out customerChoice);
-            if (customerChoice > 0 && customerChoice < BankLogic.customerList.Count)
+            if (customerChoice > 0 && customerChoice < BankLogic.customerList.Count +1)
             {
                 Console.Clear();
                 Console.WriteLine($"\n\tDu har valt \n\t{BankLogic.customerList[customerChoice - 1].ToString()}\n\tVad vill du göra? \n\t\t(1)Se konton och sätta in/ta ut pengar \n\t\t(2) Ändra namn på kunden");

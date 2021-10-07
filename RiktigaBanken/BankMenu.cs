@@ -24,7 +24,7 @@ namespace RiktigaBanken
                     case 1:
 
                         BankLogic.CustomerMenuMethod();
-                        
+
                         break;
 
                     case 2:
@@ -53,7 +53,7 @@ namespace RiktigaBanken
                         Console.WriteLine("FEL");
                         break;
 
-                
+
                 }
 
             }
