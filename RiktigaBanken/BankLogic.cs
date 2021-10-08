@@ -18,10 +18,10 @@ namespace RiktigaBanken
             string[] rader = new string[customerList.Count];
             foreach (var item in customerList)
             {
-                rader[count] = item.ToString();
-                count++;
+                    rader[count] = item.WriteToString();
+                    count++;
             }
-            await File.WriteAllLinesAsync("NyKundLista.txt", rader);
+            await File.WriteAllLinesAsync("Kundlista.txt", rader);
         }
 
         public static void ReadText()
@@ -30,20 +30,17 @@ namespace RiktigaBanken
 
             foreach (var item in lines)
             {
-                List<SavingsAccount> newAccount = new List<SavingsAccount>();
-                newAccount.Add(CreateAccount(200.0));
-                newAccount.Add(CreateAccount(200.0));
-                newAccount.Add(CreateAccount(200.0));
                 string[] vektor = item.Split(new string[] { "###" }, StringSplitOptions.None);
+                List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[3]), Int32.Parse(vektor[4]))};
                 Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
                 customerList.Add(newCustomer);
             }
 
         }
 
-        
 
-        public bool AddCustomer(string fname, string lname, long pNr)
+
+        public async Task<bool> AddCustomerAsync(string fname, string lname, long pNr)
         {
             var custexists = customerList.Any(c => c.customerPNR == pNr);
 
@@ -51,14 +48,16 @@ namespace RiktigaBanken
             {
                 return false;
             }
-            customerList.Add(new Customer(fname, lname, pNr));
-
+            Customer newCust = new Customer(fname, lname, pNr);
+            newCust.accounts.Add(BankLogic.CreateAccount(200));
+            customerList.Add(newCust);
+            await WriteText();
             return true;
         }
 
 
         public static List<int> usedNumbers = new List<int>();
-        public static SavingsAccount CreateAccount()
+        public SavingsAccount CreateAccount()
         {
             int accountnumber = 1000;
             foreach (Customer customer in BankLogic.customerList)
@@ -86,19 +85,28 @@ namespace RiktigaBanken
             return newAcc;
         }
 
+        public static SavingsAccount CreateAccount(double money, int accNumber)
+        {
+            SavingsAccount newAcc = new SavingsAccount(1/*interest*/, money, accNumber);
+            usedNumbers.Add(accNumber);
+            return newAcc;
+        }
+
 
 
 
         public static void RemoveAccount(int customerIndex, int accountIndex) //Christoffer
         {
+            
             customerList[customerIndex].accounts.RemoveAt(accountIndex);
         }
 
 
-        public static async Task ChangeName(string newFirstName,string newLastName, int customerIndex) //static? void? //Christoffer
+        public static async Task ChangeName(string newFirstName, string newLastName, int customerIndex) //static? void? //Christoffer
         {
+            
             customerList[customerIndex].customerSureName = newFirstName;
-            customerList[customerIndex].customerSureName = newLastName;
+            customerList[customerIndex].customerLastName = newLastName;
 
             await WriteText();
         }
@@ -106,25 +114,77 @@ namespace RiktigaBanken
 
         public static void Interest() //static? void? //Zacharias
         {
-
+            Console.WriteLine("Mata in ditt saldo");
+            double saldo = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Mata in din räntesats");
+            double ränta = Convert.ToDouble(Console.ReadLine());
+            double räntaBetald = saldo * (ränta / 100);
+            double totalPI = ränta + räntaBetald;
+            Console.WriteLine("Saldo = " + saldo);
+            Console.WriteLine("Ränta = " + ränta + "%");
+            Console.WriteLine("Ränta betald = " + räntaBetald);
+            Console.WriteLine("Totala summan = " + saldo + ränta);
         }
 
         public static async Task RemoveCustomerAsync(int index) //sttic.... //Christoffer
         {
+            double sum = 0;
+            foreach (var account in customerList[index].accounts)
+            {
+                sum = +account.getBalance();
+            }
+            Console.WriteLine($"Konton avslutade, totalt uttag i samband med detta är {sum}");
             customerList.RemoveAt(index);
             await WriteText();
         }
 
 
-        public static void AddMoney()//Zacharias
+        public static void DepositMoney(Account acc)//Zacharias
         {
+
+            Console.WriteLine("Hur mycket vill du sätta in?");
+            int depositAmount = int.Parse(Console.ReadLine());
+            if (depositAmount < 0)
+            {
+                Console.WriteLine("Du kan ej sätta in ett värde under 0");
+            }
+            acc.setBalance(acc.getBalance() + depositAmount);
+            Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
+
 
         }
 
-        public static void RemoveMoney()//Zacharias
+        public static async Task WithdrawMoney(Account acc)//Zacharias
         {
+            Console.WriteLine("\n Hur mycket vill du ta ut?");
+            Console.WriteLine("\n Välj mellan 500, 1000, 5000, 10000");
+            int withdrawalAmount = int.Parse(Console.ReadLine());
+            if (withdrawalAmount != 500 && withdrawalAmount != 1000 && withdrawalAmount != 5000 && withdrawalAmount != 10000)
+            {
+                Console.WriteLine("Felaktig inmatning, var god försök igen");
+            }
+            else if (withdrawalAmount < 0)
+            {
+                Console.WriteLine("Du kan ej ta ut ut ett värde under 0");
+            }
+            else if (acc.getBalance() < withdrawalAmount)
+            {
+                Console.WriteLine("Du har ej tillräckligt saldo för att ta ut");
+            }
+            else
+            {
+                Console.WriteLine("Var god ta pengarna");
+                acc.setBalance(acc.getBalance() - withdrawalAmount);
+                Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
+                await WriteText();
+            }
+
 
         }
-
     }
+
+
 }
+        
+    
+
