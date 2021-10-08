@@ -37,9 +37,9 @@ namespace RiktigaBanken
                         Console.Write("Personnummer (YYMMDDNNNN): ");
                         long pnr;
                         long.TryParse(Console.ReadLine(), out pnr);
-                        var retbool = blogic.AddCustomer(fname, lname, pnr);
+                        var retbool = blogic.AddCustomerAsync(fname, lname, pnr);
                         
-                        if (retbool)
+                        if (retbool.Result)
                         {
                             Console.WriteLine("Kund tillagd: " + fname + lname);
                             

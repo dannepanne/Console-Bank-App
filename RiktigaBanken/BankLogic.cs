@@ -18,8 +18,8 @@ namespace RiktigaBanken
             string[] rader = new string[customerList.Count];
             foreach (var item in customerList)
             {
-                rader[count] = item.WriteToString();
-                count++;
+                    rader[count] = item.WriteToString();
+                    count++;
             }
             await File.WriteAllLinesAsync("Kundlista.txt", rader);
         }
@@ -31,7 +31,7 @@ namespace RiktigaBanken
             foreach (var item in lines)
             {
                 string[] vektor = item.Split(new string[] { "###" }, StringSplitOptions.None);
-                List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[3])) };
+                List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[3]), Int32.Parse(vektor[4]))};
                 Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
                 customerList.Add(newCustomer);
             }
@@ -40,7 +40,7 @@ namespace RiktigaBanken
 
 
 
-        public bool AddCustomer(string fname, string lname, long pNr)
+        public async Task<bool> AddCustomerAsync(string fname, string lname, long pNr)
         {
             var custexists = customerList.Any(c => c.customerPNR == pNr);
 
@@ -51,7 +51,7 @@ namespace RiktigaBanken
             Customer newCust = new Customer(fname, lname, pNr);
             newCust.accounts.Add(BankLogic.CreateAccount(200));
             customerList.Add(newCust);
-            
+            await WriteText();
             return true;
         }
 
@@ -82,6 +82,13 @@ namespace RiktigaBanken
             int accountnumber = 1000 + usedNumbers.Count + 1;
             SavingsAccount newAcc = new SavingsAccount(1/*interest*/, money, accountnumber);
             usedNumbers.Add(accountnumber);
+            return newAcc;
+        }
+
+        public static SavingsAccount CreateAccount(double money, int accNumber)
+        {
+            SavingsAccount newAcc = new SavingsAccount(1/*interest*/, money, accNumber);
+            usedNumbers.Add(accNumber);
             return newAcc;
         }
 
@@ -147,7 +154,7 @@ namespace RiktigaBanken
 
         }
 
-        public static void WithdrawMoney(Account acc)//Zacharias
+        public static async Task WithdrawMoney(Account acc)//Zacharias
         {
             Console.WriteLine("\n Hur mycket vill du ta ut?");
             Console.WriteLine("\n Välj mellan 500, 1000, 5000, 10000");
@@ -156,11 +163,11 @@ namespace RiktigaBanken
             {
                 Console.WriteLine("Felaktig inmatning, var god försök igen");
             }
-            if (withdrawalAmount < 0)
+            else if (withdrawalAmount < 0)
             {
                 Console.WriteLine("Du kan ej ta ut ut ett värde under 0");
             }
-            if (acc.getBalance() < withdrawalAmount)
+            else if (acc.getBalance() < withdrawalAmount)
             {
                 Console.WriteLine("Du har ej tillräckligt saldo för att ta ut");
             }
@@ -169,7 +176,7 @@ namespace RiktigaBanken
                 Console.WriteLine("Var god ta pengarna");
                 acc.setBalance(acc.getBalance() - withdrawalAmount);
                 Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
-
+                await WriteText();
             }
 
 
