@@ -10,6 +10,7 @@ namespace RiktigaBanken
     {
         public static void Menu()
         {
+            Console.Clear();
             bool bankmenu = true;
             var blogic = new BankLogic();
             //DANIEL
@@ -88,6 +89,7 @@ namespace RiktigaBanken
 
             static void CustomerMenuMethod()
             {
+                Console.Clear();
                 Console.WriteLine("Välj en befintlig kund:");
                 int number = 1;
                 foreach (var customer in BankLogic.customerList)

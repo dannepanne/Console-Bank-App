@@ -156,28 +156,35 @@ namespace RiktigaBanken
 
         public static async Task WithdrawMoney(Account acc)//Zacharias
         {
-            Console.WriteLine("\n Hur mycket vill du ta ut?");
-            Console.WriteLine("\n Välj mellan 500, 1000, 5000, 10000");
-            int withdrawalAmount = int.Parse(Console.ReadLine());
-            if (withdrawalAmount != 500 && withdrawalAmount != 1000 && withdrawalAmount != 5000 && withdrawalAmount != 10000)
+            bool withDraw = true;
+            while (withDraw)
             {
-                Console.WriteLine("Felaktig inmatning, var god försök igen");
+                Console.WriteLine("\n Hur mycket vill du ta ut?");
+                Console.WriteLine("\n Välj mellan 500, 1000, 5000, 10000");
+                int withdrawalAmount = int.Parse(Console.ReadLine());
+                if (withdrawalAmount != 500 && withdrawalAmount != 1000 && withdrawalAmount != 5000 && withdrawalAmount != 10000)
+                {
+                    Console.WriteLine("Felaktig inmatning, var god försök igen");
+                }
+                else if (withdrawalAmount < 0)
+                {
+                    Console.WriteLine("Du kan ej ta ut ut ett värde under 0");
+                }
+                else if (acc.getBalance() < withdrawalAmount)
+                {
+                    Console.WriteLine("Du har ej tillräckligt saldo för att ta ut");
+                }
+                else
+                {
+                    Console.WriteLine("Var god ta pengarna");
+                    acc.setBalance(acc.getBalance() - withdrawalAmount);
+                    Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
+                    await WriteText();
+                    Console.ReadKey();
+                    withDraw = false;
+                }
             }
-            else if (withdrawalAmount < 0)
-            {
-                Console.WriteLine("Du kan ej ta ut ut ett värde under 0");
-            }
-            else if (acc.getBalance() < withdrawalAmount)
-            {
-                Console.WriteLine("Du har ej tillräckligt saldo för att ta ut");
-            }
-            else
-            {
-                Console.WriteLine("Var god ta pengarna");
-                acc.setBalance(acc.getBalance() - withdrawalAmount);
-                Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
-                await WriteText();
-            }
+            
 
 
         }
