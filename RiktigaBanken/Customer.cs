@@ -7,7 +7,7 @@ using System.IO;
 
 namespace RiktigaBanken
 {
-    class Customer
+    class Customer //customer class med olika constructors och en ToString overload för att få tillbaka flera props på en gång
     {
 
         public string customerSureName { get; set; }
@@ -37,7 +37,7 @@ namespace RiktigaBanken
             string retur = $"{this.customerPNR}  {this.customerSureName}  {this.customerLastName}";
             return retur.ToString();
         }
-        public string WriteToString()
+        public string WriteToString() //metod för att skriva ut customer till textil så att den kan sparas och läsas in igen senare
         {
             string retur = $"{this.customerSureName}###{this.customerLastName}###{this.customerPNR}###{accounts[0].getBalance()}###{accounts[0].accountNumber}";
             return retur.ToString();

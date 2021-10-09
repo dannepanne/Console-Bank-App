@@ -12,7 +12,7 @@ namespace RiktigaBanken
         public static List<Customer> customerList = new List<Customer>();
 
 
-        public static async Task WriteText()
+        public static async Task WriteText() //skriver till textfil, både skriv och läsmetoderna använder sig av samma formatering för informationen så vi kan spara och läsa från samma fil.
         {
             int count = 0;
             string[] rader = new string[customerList.Count];
@@ -26,7 +26,7 @@ namespace RiktigaBanken
 
         public static void ReadText()
         {
-            string[] lines = File.ReadAllLines("Kundlista.txt");
+            string[] lines = File.ReadAllLines("Kundlista.txt"); //läser in från textfil, varje rad har formatet FÖRNAMN###EFTERNAMN###PERSONNUMMER###SALDO###KONTONUMMER
 
             foreach (var item in lines)
             {
@@ -56,15 +56,15 @@ namespace RiktigaBanken
         }
 
 
-        public static List<int> usedNumbers = new List<int>();
-        public SavingsAccount CreateAccount()
+        public static List<int> usedNumbers = new List<int>(); //lista med alla använda kontonummer så att vi inte återanvänder samma 2 gånger (bör sparas till fil om man tar bort kunder)
+        public SavingsAccount CreateAccount() //skapar ett kontonummer baserat på antalet existera
         {
             int accountnumber = 1000;
             foreach (Customer customer in BankLogic.customerList)
             {
                 foreach (var item in customer.accounts)
                 {
-                    if (item.accountNumber == accountnumber)
+                    if (item.accountNumber == accountnumber && accountnumber != usedNumbers.IndexOf(accountnumber))
                     {
                         accountnumber++;
                     }
@@ -76,7 +76,7 @@ namespace RiktigaBanken
             return newAcc;
 
         }
-        public static SavingsAccount CreateAccount(double money)
+        public static SavingsAccount CreateAccount(double money) 
         {
 
             int accountnumber = 1000 + usedNumbers.Count + 1;
@@ -85,7 +85,7 @@ namespace RiktigaBanken
             return newAcc;
         }
 
-        public static SavingsAccount CreateAccount(double money, int accNumber)
+        public static SavingsAccount CreateAccount(double money, int accNumber) //constructors för att både göra ett nytt konto med en summa med ett kontonummer som tilldelas 
         {
             SavingsAccount newAcc = new SavingsAccount(1/*interest*/, money, accNumber);
             usedNumbers.Add(accNumber);

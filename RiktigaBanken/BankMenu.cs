@@ -14,7 +14,7 @@ namespace RiktigaBanken
             bool bankmenu = true;
             var blogic = new BankLogic();
             //DANIEL
-            while (bankmenu)
+            while (bankmenu) //bankmeny för val och navigering i banken
             {
                 Console.WriteLine("\n\tVälkommen till Banken, vad vill du göra idag? \n\t(1) Visa kunder och sätt sätt in/ ta ut pengar \n\t(2) Skapa konto \n\t(3) Avsluta och skriv ut saldo \n\t(4) Avsluta och spara");
                 int choice = 0;
@@ -87,7 +87,7 @@ namespace RiktigaBanken
             }
 
 
-            static void CustomerMenuMethod()
+            static void CustomerMenuMethod() //meny för att navigera mellan kunder och ta ut /sätta in pengar.
             {
                 Console.Clear();
                 Console.WriteLine("Välj en befintlig kund:");

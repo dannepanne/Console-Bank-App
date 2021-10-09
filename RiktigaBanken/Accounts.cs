@@ -40,7 +40,7 @@ namespace RiktigaBanken
 
 
         }
-        class SalaryAccount : Account
+        class SalaryAccount : Account //ärvd klass, används dock inte
         {
             public SalaryAccount(double _accountInterest, double _accountBalance, int _accountNumber) /*: base(_accountInterest, _accountBalance, _accountNumber)*/
             {
@@ -55,12 +55,3 @@ namespace RiktigaBanken
         }
     
 }
-//Customer Daniel = new Customer("Daniel", "Lenberg", 12345678 );
-//Daniel.accounts.Add(BankLogic.CreateAccount(200.0));
-
-
-//Console.WriteLine(Daniel.ToString());
-//foreach (var item in Daniel.accounts)
-//{
-//    Console.WriteLine($"{item.accountNumber} {item.accountInterest} {item.accountType} {item.getBalance()}"  ); 
-//}
