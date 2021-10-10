@@ -34,8 +34,13 @@ namespace RiktigaBanken
 
         public override string ToString()
         {
-            string retur = $"{this.customerPNR}  {this.customerSureName}  {this.customerLastName}";
-            return retur.ToString();
+            string retur = $"Kund: {this.customerPNR}  {this.customerSureName}  {this.customerLastName}" + Environment.NewLine;
+            foreach (var acc in this.accounts)
+            {
+                retur = retur + "Konto: " + acc.accountNumber + "  Saldo: " + acc.getBalance() + Environment.NewLine;
+            }
+
+            return retur;
         }
         public string WriteToString()
         {

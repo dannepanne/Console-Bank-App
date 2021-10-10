@@ -9,10 +9,11 @@ namespace RiktigaBanken
 {
     class BankLogic
     {
+        private int AccountNumber { get; set; }  = 1001;  //Christian
         public static List<Customer> customerList = new List<Customer>();
 
 
-        public static async Task WriteText()
+        public static void WriteText()
         {
             int count = 0;
             string[] rader = new string[customerList.Count];
@@ -21,40 +22,100 @@ namespace RiktigaBanken
                 rader[count] = item.WriteToString();
                 count++;
             }
-            await File.WriteAllLinesAsync("Kundlista.txt", rader);
+            File.WriteAllLines("Kundlista.txt", rader);
         }
 
         public static void ReadText()
         {
-            string[] lines = File.ReadAllLines("Kundlista.txt");
-
-            foreach (var item in lines)
+            if (File.Exists("Kundlista.txt"))
             {
-                string[] vektor = item.Split(new string[] { "###" }, StringSplitOptions.None);
-                List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[3])) };
-                Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
-                customerList.Add(newCustomer);
+                string[] lines = File.ReadAllLines("Kundlista.txt");
+
+                foreach (var item in lines)
+                {
+                    string[] vektor = item.Split(new string[] {"###"}, StringSplitOptions.None);
+                    //List<SavingsAccount> newAccount = new List<SavingsAccount>();
+                    //                       {CreateAccount(double.Parse(vektor[3]))};
+                    //                  Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
+                    //                customerList.Add(newCustomer);
+                }
             }
 
         }
 
-
-
-        public bool AddCustomer(string fname, string lname, long pNr)
+        public void PrintCustomers() //Christian
         {
-            var custexists = customerList.Any(c => c.customerPNR == pNr);
+            foreach (Customer customer in customerList)
+            {
+                {
+                    Console.WriteLine(customer.ToString());
+                }
 
-            if (custexists)
+            }
+        }
+
+        public List<string> GetCustomer(long pNr) //Christian
+        {
+            var cust = customerList.FirstOrDefault(c => c.customerPNR == pNr);
+
+            var custlist = new List<string>();
+
+            if (cust != null)
+            {
+                custlist.Add(cust.customerSureName);
+                custlist.Add(cust.customerLastName);
+            }
+
+            return custlist;
+
+        }
+
+        public bool AddCustomer(string fname, string lname, long pNr) //Christian
+        {
+            var custexists = customerList.Any(c => c.customerPNR == pNr); //hämta aktuell kund från kundlistan
+
+            if (custexists)  //finns kunden redan går det inte att skapa nytt
             {
                 return false;
             }
-            Customer newCust = new Customer(fname, lname, pNr);
-            newCust.accounts.Add(BankLogic.CreateAccount(200));
+            Customer newCust = new Customer(fname, lname, pNr);  //skapa ny kund i kundlistan
             customerList.Add(newCust);
             
             return true;
         }
 
+        public int AddSavingsAccount(long pNr) //Christian
+        {
+            int accountNr = AccountNumber;  //hämta kontonr från globala property
+
+            foreach (var cst in customerList)  //kolla att kontonr inte finns redan
+            {
+                var acc = cst.accounts.FirstOrDefault(a => a.accountNumber == accountNr);
+
+                if (acc != null)  //konto finns redan hos en kund
+                {
+                    return -1;
+                }
+            }
+
+            
+                var cust = customerList.FirstOrDefault(k => k.customerPNR == pNr); //hämta kund som vill skapa konto
+
+                if (cust != null)  //kund finns, skapa konto
+                {
+                    var acc = new SavingsAccount(1.15, 0, accountNr);
+
+                    cust.accounts.Add(acc);  //lägg till konto i kundens konto-lista
+                    this.AccountNumber++; //sätt kontonr på BankLogic-objektet till nästa nummer.
+                }
+                else
+                {
+                    return -2;
+                }
+
+            
+            return accountNr;
+        }
 
         public static List<int> usedNumbers = new List<int>();
         public SavingsAccount CreateAccount()
@@ -76,35 +137,92 @@ namespace RiktigaBanken
             return newAcc;
 
         }
-        public static SavingsAccount CreateAccount(double money)
-        {
 
-            int accountnumber = 1000 + usedNumbers.Count + 1;
-            SavingsAccount newAcc = new SavingsAccount(1/*interest*/, money, accountnumber);
-            usedNumbers.Add(accountnumber);
-            return newAcc;
+
+
+        public bool ChangeCustomerName(string fname, string lname, long pNr)  //Christian
+        {
+            var cust = customerList.FirstOrDefault(c => c.customerPNR == pNr);  //hämta aktuell kund från kundlistan
+
+            if (cust == null) //hittar inte kunden
+                return false;
+
+            cust.customerSureName = fname;  //ändra namn på kunden
+            cust.customerLastName = lname;
+
+            return true;
         }
 
 
 
+        public bool Deposit(long pNr, int accountId, double amount)  //Christian
+        {
+            var cust = customerList.FirstOrDefault(c => c.customerPNR == pNr);  //hämta aktuell kund från kundlistan
+
+            if (cust == null) //hittar inte kunden
+                return false;
+
+            var acc = cust.accounts.FirstOrDefault(a => a.accountNumber == accountId); //hämta aktuell konto från kundens kontolista
+
+            if (acc == null) //hittar inte konto
+                return false;
+
+            acc.setBalance(acc.getBalance() + amount); //öka saldot med angivet belopp 
+
+            return true;
+        }
+
+        public bool Withdraw(long pNr, int accountId, double amount)  //Christian
+        {
+            var cust = customerList.FirstOrDefault(c => c.customerPNR == pNr);  //hämta aktuell kund
+
+            if (cust == null)  //kund finns inte
+                return false;
+
+            var acc = cust.accounts.FirstOrDefault(a => a.accountNumber == accountId); //hämta konto från kundens kontolista
+
+            if (acc == null) //konto finns inte
+                return false;
+
+            if (acc.getBalance() - amount < 0) // kolla att beloppet att ta ut inte överskrider saldot
+                return false;
+
+            acc.setBalance(acc.getBalance() - amount);  //sätt nytt saldo
+
+            return true;
+        }
+
+        public List<string> RemoveCustomer(long pNr) //Christian
+        {
+            var total = 0.0;
+
+            var cust = customerList.FirstOrDefault(c => c.customerPNR == pNr);  //hämta aktuell kund att ta bort
+
+            var custlist = new List<string>(); //lista att skicka tillbaka med kunduppgifter
+
+            if (cust != null)
+            {
+                custlist.Add(cust.customerSureName + " " + cust.customerLastName);  //första raden i listan är för- och efternamn
+
+                foreach (var acc in cust.accounts)  //loopa igenom alla konton för kunden
+                {
+                    total = total + acc.getBalance() + acc.getBalance() * (acc.accountInterest / 100);
+                    custlist.Add(acc.accountNumber.ToString());  //lägg till rad med kontonr samt saldo inkl ränta
+                }
+
+                custlist.Add(total.ToString()); //lägg till totala saldot av alla konto inkl ränta sist i listan
+                customerList.Remove(cust);  //ta bort kund inkl konton från kundlistan
+            }
+
+
+            return custlist;
+        }
 
         public static void RemoveAccount(int customerIndex, int accountIndex) //Christoffer
         {
-            
+
             customerList[customerIndex].accounts.RemoveAt(accountIndex);
         }
-
-
-        public static async Task ChangeName(string newFirstName, string newLastName, int customerIndex) //static? void? //Christoffer
-        {
-            
-            customerList[customerIndex].customerSureName = newFirstName;
-            customerList[customerIndex].customerLastName = newLastName;
-
-            await WriteText();
-        }
-
-
         public static void Interest() //static? void? //Zacharias
         {
             Console.WriteLine("Mata in ditt saldo");
@@ -128,9 +246,9 @@ namespace RiktigaBanken
             }
             Console.WriteLine($"Konton avslutade, totalt uttag i samband med detta är {sum}");
             customerList.RemoveAt(index);
-            await WriteText();
+            //await WriteText();
+            WriteText();
         }
-
 
         public static void DepositMoney(Account acc)//Zacharias
         {
@@ -174,6 +292,16 @@ namespace RiktigaBanken
 
 
         }
+        public static async Task ChangeName(string newFirstName, string newLastName, int customerIndex) //static? void? //Christoffer
+        {
+
+            customerList[customerIndex].customerSureName = newFirstName;
+            customerList[customerIndex].customerLastName = newLastName;
+
+            //await WriteText();
+            WriteText();
+        }
+
     }
 
 
