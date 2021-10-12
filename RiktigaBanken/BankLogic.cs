@@ -74,7 +74,7 @@ namespace RiktigaBanken
         {
             var custexists = customerList.Any(c => c.customerPNR == pNr); //hämta aktuell kund från kundlistan
 
-            if (custexists)  //finns kunden redan går det inte att skapa nytt
+            if (custexists)  //finns kunden redan går det inte att skapa en ny
             {
                 return false;
             }
@@ -88,7 +88,7 @@ namespace RiktigaBanken
         {
             int accountNr = AccountNumber;  //hämta kontonr från globala property
 
-            foreach (var cst in customerList)  //kolla att kontonr inte finns redan
+            foreach (var cst in customerList)  //kolla att kontonr inte redan finns
             {
                 var acc = cst.accounts.FirstOrDefault(a => a.accountNumber == accountNr);
 
