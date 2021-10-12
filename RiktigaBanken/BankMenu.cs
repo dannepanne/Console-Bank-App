@@ -150,26 +150,6 @@ namespace RiktigaBanken
 
 
                     case 5:
-
-                        //Console.Write("Ange personnummer på kunden som ska tas bort: ");
-                        //long.TryParse(Console.ReadLine(), out pnr);
-
-                        //var retlist = blogic.RemoveCustomer(pnr);
-                        //if (retlist.Count > 0)
-                        //{
-                        //    var l = retlist.Count;
-
-                        //    Console.WriteLine("Kund " + retlist[0] + " borttagen");
-                        //    Console.WriteLine("Följande konton togs bort:");
-                        //    for (int i = 1; i < l - 1; i++)
-                        //    {
-                        //        Console.WriteLine(retlist[i]);
-                        //    }
-
-                        //    Console.WriteLine("Total saldo inkl ränta: " + retlist[l - 1]);
-                        //}
-
-                        //break;
                         int number = 1;
                         Console.WriteLine("Vilken kund med tillhörande konto/n ska avslutas?");
                         foreach (var customer in BankLogic.customerList)
