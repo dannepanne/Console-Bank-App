@@ -115,19 +115,27 @@ namespace RiktigaBanken
 
         public static void Interest() //static? void? //Zacharias
         {
-            Console.WriteLine("Mata in ditt saldo");
-            string money = Console.ReadLine();
-            Double saldo = GetComma(money);
+            double ränta = 0;
+            double saldo = 0;
+            while (saldo <= 0)
+            {
+
+                Console.WriteLine("Mata in ditt saldo");
+                string money = Console.ReadLine();
+                saldo = GetComma(money);
+                if (saldo <= 0)
+                    Console.WriteLine("\n\t Inmatat saldo måste ha ett positivt värde, försök igen");
+            }
             Console.WriteLine("Mata in din räntesats");
             string interest = Console.ReadLine();
-            Double ränta = GetComma(interest);           
-            Double räntaBetald = saldo * (ränta / 100);
-            Double totalPI = ränta + räntaBetald;
-            Console.WriteLine("Saldo = " + saldo);
+            ränta = GetComma(interest);
+            double räntaBetald = saldo * (ränta / 100);
+            double totalPI = saldo + räntaBetald;
+            Console.WriteLine("Saldo = " + saldo + "kr");
             Console.WriteLine("Ränta = " + ränta + "%");
-            Console.WriteLine("Ränta betald = " + räntaBetald);
-            Console.WriteLine("Totala summan = " + totalPI);
-
+            Console.WriteLine("Ränta betald = " + räntaBetald + "kr");
+            Console.WriteLine("Totala summan = " + totalPI + "kr");
+            Console.ReadKey();
 
         }
         public static Double GetComma(string inDoub)
@@ -167,7 +175,7 @@ namespace RiktigaBanken
 
         public static void WithdrawMoney(SavingsAccount acc)//Zacharias
         {
-            var answer = "";
+
             while (true)
             {
                 Console.WriteLine("\n Hur mycket vill du ta ut?");

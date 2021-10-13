@@ -16,6 +16,7 @@ namespace RiktigaBanken
             //DANIEL
             while (bankmenu) //bankmeny för val och navigering i banken
             {
+                Console.Clear();
                 Console.WriteLine("\n\tVälkommen till Banken, vad vill du göra idag? \n\t(1) Visa kunder och sätt sätt in/ ta ut pengar \n\t(2) Skapa konto \n\t(3) Avsluta och skriv ut saldo \n\t(4) Räntekalkylator \n\t(5) Avsluta och spara");
                 int choice = 0;
                 Int32.TryParse(Console.ReadLine(), out choice);
