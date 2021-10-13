@@ -16,7 +16,7 @@ namespace RiktigaBanken
             //DANIEL
             while (bankmenu) //bankmeny för val och navigering i banken
             {
-                Console.WriteLine("\n\tVälkommen till Banken, vad vill du göra idag? \n\t(1) Visa kunder och sätt sätt in/ ta ut pengar \n\t(2) Skapa konto \n\t(3) Avsluta och skriv ut saldo \n\t(4) Avsluta och spara");
+                Console.WriteLine("\n\tVälkommen till Banken, vad vill du göra idag? \n\t(1) Visa kunder och sätt sätt in/ ta ut pengar \n\t(2) Skapa konto \n\t(3) Avsluta och skriv ut saldo \n\t(4) Räntekalkylator \n\t(5) Avsluta och spara");
                 int choice = 0;
                 Int32.TryParse(Console.ReadLine(), out choice);
 
@@ -71,6 +71,10 @@ namespace RiktigaBanken
                             break;
 
                     case 4:
+                        BankLogic.Interest();
+                        break;
+
+                    case 5:
                         Console.WriteLine("Avslutar och sparar till Kundlista.txt");
                         BankLogic.WriteText();
                         bankmenu = false;
@@ -103,7 +107,7 @@ namespace RiktigaBanken
                 if (customerChoice > 0 && customerChoice < BankLogic.customerList.Count + 1)
                 {
                     Console.Clear();
-                    Console.WriteLine($"\n\tDu har valt \n\t{BankLogic.customerList[customerChoice - 1].ToString()}\n\tVad vill du göra? \n\t\t(1)Se konton och sätta in/ta ut pengar \n\t\t(2) Ändra namn på kunden");
+                    Console.WriteLine($"\n\tDu har valt \n\t{BankLogic.customerList[customerChoice - 1].ToString()}\n\tVad vill du göra? \n\t\t(1)Se konton och sätta in/ta ut pengar \n\t\t(2) Ändra namn på kund ");
                     int customerEdit;
                     Int32.TryParse(Console.ReadLine(), out customerEdit);
                     switch (customerEdit)
@@ -145,6 +149,7 @@ namespace RiktigaBanken
                             BankLogic.ChangeName(newSurname, newLastname, customerChoice - 1);
                             break;
 
+                        
 
                         default:
                             Console.WriteLine("\n\tFelaktigt val");

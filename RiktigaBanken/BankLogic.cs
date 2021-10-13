@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Globalization;
 
 namespace RiktigaBanken
 {
@@ -18,8 +19,8 @@ namespace RiktigaBanken
             string[] rader = new string[customerList.Count];
             foreach (var item in customerList)
             {
-                    rader[count] = item.WriteToString();
-                    count++;
+                rader[count] = item.WriteToString();
+                count++;
             }
             await File.WriteAllLinesAsync("Kundlista.txt", rader);
         }
@@ -31,7 +32,7 @@ namespace RiktigaBanken
             foreach (var item in lines)
             {
                 string[] vektor = item.Split(new string[] { "###" }, StringSplitOptions.None);
-                List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[3]), Int32.Parse(vektor[4]))};
+                List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[3]), Int32.Parse(vektor[4])) };
                 Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
                 customerList.Add(newCustomer);
             }
@@ -76,7 +77,7 @@ namespace RiktigaBanken
             return newAcc;
 
         }
-        public static SavingsAccount CreateAccount(double money) 
+        public static SavingsAccount CreateAccount(double money)
         {
 
             int accountnumber = 1000 + usedNumbers.Count + 1;
@@ -97,14 +98,14 @@ namespace RiktigaBanken
 
         public static void RemoveAccount(int customerIndex, int accountIndex) //Christoffer
         {
-            
+
             customerList[customerIndex].accounts.RemoveAt(accountIndex);
         }
 
 
         public static async Task ChangeName(string newFirstName, string newLastName, int customerIndex) //static? void? //Christoffer
         {
-            
+
             customerList[customerIndex].customerSureName = newFirstName;
             customerList[customerIndex].customerLastName = newLastName;
 
@@ -115,17 +116,27 @@ namespace RiktigaBanken
         public static void Interest() //static? void? //Zacharias
         {
             Console.WriteLine("Mata in ditt saldo");
-            double saldo = Convert.ToDouble(Console.ReadLine());
+            string money = Console.ReadLine();
+            Double saldo = GetComma(money);
             Console.WriteLine("Mata in din räntesats");
-            double ränta = Convert.ToDouble(Console.ReadLine());
-            double räntaBetald = saldo * (ränta / 100);
-            double totalPI = ränta + räntaBetald;
+            string interest = Console.ReadLine();
+            Double ränta = GetComma(interest);           
+            Double räntaBetald = saldo * (ränta / 100);
+            Double totalPI = ränta + räntaBetald;
             Console.WriteLine("Saldo = " + saldo);
             Console.WriteLine("Ränta = " + ränta + "%");
             Console.WriteLine("Ränta betald = " + räntaBetald);
-            Console.WriteLine("Totala summan = " + saldo + ränta);
-        }
+            Console.WriteLine("Totala summan = " + totalPI);
 
+
+        }
+        public static Double GetComma(string inDoub)
+        {
+            Double result;
+            string newString = inDoub.Replace(".", ",");
+            Double.TryParse(newString, out result);
+            return result;
+        }
         public static async Task RemoveCustomerAsync(int index) //sttic.... //Christoffer
         {
             double sum = 0;
@@ -154,10 +165,10 @@ namespace RiktigaBanken
 
         }
 
-        public static async Task WithdrawMoney(Account acc)//Zacharias
+        public static void WithdrawMoney(SavingsAccount acc)//Zacharias
         {
-            bool withDraw = true;
-            while (withDraw)
+            var answer = "";
+            while (true)
             {
                 Console.WriteLine("\n Hur mycket vill du ta ut?");
                 Console.WriteLine("\n Välj mellan 500, 1000, 5000, 10000");
@@ -179,12 +190,11 @@ namespace RiktigaBanken
                     Console.WriteLine("Var god ta pengarna");
                     acc.setBalance(acc.getBalance() - withdrawalAmount);
                     Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
-                    await WriteText();
-                    Console.ReadKey();
-                    withDraw = false;
                 }
+
             }
-            
+
+
 
 
         }
@@ -192,6 +202,6 @@ namespace RiktigaBanken
 
 
 }
-        
-    
+
+
 
