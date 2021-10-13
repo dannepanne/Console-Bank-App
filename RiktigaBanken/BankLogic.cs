@@ -27,18 +27,14 @@ namespace RiktigaBanken
 
         public static void ReadText()
         {
-            if (File.Exists("Kundlista.txt"))
-            {
-                string[] lines = File.ReadAllLines("Kundlista.txt");
+            string[] lines = File.ReadAllLines("Kundlista.txt"); //läser in från textfil, varje rad har formatet FÖRNAMN###EFTERNAMN###PERSONNUMMER###SALDO###KONTONUMMER
 
-                foreach (var item in lines)
-                {
-                    string[] vektor = item.Split(new string[] {"###"}, StringSplitOptions.None);
-                    //List<SavingsAccount> newAccount = new List<SavingsAccount>();
-                    //                       {CreateAccount(double.Parse(vektor[3]))};
-                    //                  Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
-                    //                customerList.Add(newCustomer);
-                }
+            foreach (var item in lines)
+            {
+                string[] vektor = item.Split(new string[] { "###" }, StringSplitOptions.None);
+                List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[3]), Int32.Parse(vektor[4])) };
+                Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
+                customerList.Add(newCustomer);
             }
 
         }
@@ -84,6 +80,21 @@ namespace RiktigaBanken
             return true;
         }
 
+        public static SavingsAccount CreateAccount(double money)
+        {
+
+            int accountnumber = 1000 + usedNumbers.Count + 1;
+            SavingsAccount newAcc = new SavingsAccount(1/*interest*/, money, accountnumber);
+            usedNumbers.Add(accountnumber);
+            return newAcc;
+        }
+
+        public static SavingsAccount CreateAccount(double money, int accNumber) //constructors för att både göra ett nytt konto med en summa med ett kontonummer som tilldelas 
+        {
+            SavingsAccount newAcc = new SavingsAccount(1/*interest*/, money, accNumber);
+            usedNumbers.Add(accNumber);
+            return newAcc;
+        }
         public int AddSavingsAccount(long pNr) //Christian
         {
             int accountNr = AccountNumber;  //hämta kontonr från globala property
