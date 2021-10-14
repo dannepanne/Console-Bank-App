@@ -33,7 +33,18 @@ namespace RiktigaBanken
             {
                 string[] vektor = item.Split(new string[] { "###" }, StringSplitOptions.None);
                 List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[3]), Int32.Parse(vektor[4])) };
+                for (int vektorCount = 5; vektorCount < vektor.Length; vektorCount++)
+                {
+                    List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[ve]), Int32.Parse(vektor[6])) };
+                }
+                    
+                
+                try
+                List<SavingsAccount> newAccount3 = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[7]), Int32.Parse(vektor[8])) };
+                try
+                List<SavingsAccount> newAccount4 = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[9]), Int32.Parse(vektor[10])) };
                 Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
+                newCustomer.accounts.AddRange(new SavingsAccount[] { newAccount2, newAccount3, newAccount4 });
                 customerList.Add(newCustomer);
             }
 
@@ -47,8 +58,11 @@ namespace RiktigaBanken
 
             if (custexists)
             {
+                Console.WriteLine("finns redan");
+                Console.ReadKey();
                 return false;
             }
+            
             Customer newCust = new Customer(fname, lname, pNr);
             newCust.accounts.Add(BankLogic.CreateAccount(200));
             customerList.Add(newCust);
@@ -100,6 +114,7 @@ namespace RiktigaBanken
         {
 
             customerList[customerIndex].accounts.RemoveAt(accountIndex);
+            
         }
 
 
@@ -140,10 +155,12 @@ namespace RiktigaBanken
         }
         public static Double GetComma(string inDoub)
         {
-            Double result;
-            string newString = inDoub.Replace(".", ",");
-            Double.TryParse(newString, out result);
-            return result;
+            
+                Double result;
+                string newString = inDoub.Replace(".", ",");
+                Double.TryParse(newString, out result);
+                return result;
+            
         }
         public static async Task RemoveCustomerAsync(int index) //sttic.... //Christoffer
         {
@@ -160,15 +177,27 @@ namespace RiktigaBanken
 
         public static void DepositMoney(Account acc)//Zacharias
         {
-
-            Console.WriteLine("Hur mycket vill du sätta in?");
-            int depositAmount = int.Parse(Console.ReadLine());
-            if (depositAmount < 0)
+            try
             {
-                Console.WriteLine("Du kan ej sätta in ett värde under 0");
+                Console.WriteLine("Hur mycket vill du sätta in?");
+                string depositAmount2 = Console.ReadLine();
+                double depositAmount = GetComma(depositAmount2);
+                if (depositAmount <= 0)
+                {
+                    Console.WriteLine("Du kan ej sätta in ett värde under 0 alternativt felaktig inmatning");
+                    Console.ReadKey();
+                }
+                acc.setBalance(acc.getBalance() + depositAmount);
+                Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
+                Console.ReadKey();
             }
-            acc.setBalance(acc.getBalance() + depositAmount);
-            Console.WriteLine("Ditt nya saldo är " + acc.getBalance());
+            catch(Exception e)
+            {
+                Console.WriteLine("skärp dig");
+                Console.WriteLine(e);
+                Console.Beep();
+                Console.ReadKey();
+            }
 
 
         }

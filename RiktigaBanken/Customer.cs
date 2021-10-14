@@ -7,7 +7,7 @@ using System.IO;
 
 namespace RiktigaBanken
 {
-    class Customer //customer class med olika constructors och en ToString overload för att få tillbaka flera props på en gång
+     class Customer //customer class med olika constructors och en ToString overload för att få tillbaka flera props på en gång
     {
 
         public string customerSureName { get; set; }
