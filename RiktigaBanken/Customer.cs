@@ -39,7 +39,19 @@ namespace RiktigaBanken
         }
         public string WriteToString() //metod för att skriva ut customer till textil så att den kan sparas och läsas in igen senare
         {
-            string retur = $"{this.customerSureName}###{this.customerLastName}###{this.customerPNR}###{accounts[0].getBalance()}###{accounts[0].accountNumber}";
+            string accountString = "";
+            foreach (var item in accounts)
+            {
+                if(item != accounts.Last())
+                {
+                    accountString += $"{item.getBalance()}###{item.accountNumber}###";
+                } else
+                {
+                    accountString += $"{item.getBalance()}###{item.accountNumber}";
+                }
+                
+            }
+            string retur = $"{this.customerSureName}###{this.customerLastName}###{this.customerPNR}###{accountString}";
             return retur.ToString();
         }
 

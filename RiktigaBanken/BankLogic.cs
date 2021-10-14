@@ -32,20 +32,13 @@ namespace RiktigaBanken
             foreach (var item in lines)
             {
                 string[] vektor = item.Split(new string[] { "###" }, StringSplitOptions.None);
-                List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[3]), Int32.Parse(vektor[4])) };
-                for (int vektorCount = 5; vektorCount < vektor.Length; vektorCount++)
+                List<SavingsAccount> newAccount = new List<SavingsAccount>();
+                for (int vektorCount = 3; vektorCount < vektor.Length; vektorCount+=2)
                 {
-                    List<SavingsAccount> newAccount = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[ve]), Int32.Parse(vektor[6])) };
+                    newAccount.Add(CreateAccount(double.Parse(vektor[vektorCount]), Int32.Parse(vektor[vektorCount+1])));
                 }
-                    
-                
-                try
-                List<SavingsAccount> newAccount3 = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[7]), Int32.Parse(vektor[8])) };
-                try
-                List<SavingsAccount> newAccount4 = new List<SavingsAccount>() { CreateAccount(double.Parse(vektor[9]), Int32.Parse(vektor[10])) };
-                Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
-                newCustomer.accounts.AddRange(new SavingsAccount[] { newAccount2, newAccount3, newAccount4 });
-                customerList.Add(newCustomer);
+                    Customer newCustomer = new Customer(vektor[0], vektor[1], long.Parse(vektor[2]), newAccount);
+                    customerList.Add(newCustomer);
             }
 
         }
@@ -62,7 +55,6 @@ namespace RiktigaBanken
                 Console.ReadKey();
                 return false;
             }
-            
             Customer newCust = new Customer(fname, lname, pNr);
             newCust.accounts.Add(BankLogic.CreateAccount(200));
             customerList.Add(newCust);
@@ -75,16 +67,21 @@ namespace RiktigaBanken
         public SavingsAccount CreateAccount() //skapar ett kontonummer baserat på antalet existera
         {
             int accountnumber = 1000;
-            foreach (Customer customer in BankLogic.customerList)
+            bool newAccNumCreated = false;
+            while (newAccNumCreated == false)
             {
-                foreach (var item in customer.accounts)
+                for (int i = 0; i < usedNumbers.Count; i++)
                 {
-                    if (item.accountNumber == accountnumber && accountnumber != usedNumbers.IndexOf(accountnumber))
+                    if (accountnumber == usedNumbers[i])
                     {
                         accountnumber++;
+                        i = 0;
+                    }
+                    else
+                    {
+                        newAccNumCreated = true;
                     }
                 }
-
             }
             SavingsAccount newAcc = new SavingsAccount(1, 0, accountnumber);
             usedNumbers.Add(accountnumber);
@@ -93,8 +90,24 @@ namespace RiktigaBanken
         }
         public static SavingsAccount CreateAccount(double money)
         {
-
-            int accountnumber = 1000 + usedNumbers.Count + 1;
+            int accountnumber = 1000;
+            bool newAccNumCreated = false;
+                while(newAccNumCreated == false)
+                {
+                for(int i = 0; i < usedNumbers.Count; i++)
+                {
+                    if (accountnumber == usedNumbers[i])
+                    {
+                        accountnumber++;
+                        i = 0;
+                    }
+                    else
+                    {
+                        newAccNumCreated = true;
+                    }
+                }        
+            }
+            //int accountnumber = 1000 + usedNumbers.Count + 1;
             SavingsAccount newAcc = new SavingsAccount(1/*interest*/, money, accountnumber);
             usedNumbers.Add(accountnumber);
             return newAcc;
@@ -103,6 +116,7 @@ namespace RiktigaBanken
         public static SavingsAccount CreateAccount(double money, int accNumber) //constructors för att både göra ett nytt konto med en summa med ett kontonummer som tilldelas 
         {
             SavingsAccount newAcc = new SavingsAccount(1/*interest*/, money, accNumber);
+            //usedNumbers.Add(accNumber);
             usedNumbers.Add(accNumber);
             return newAcc;
         }

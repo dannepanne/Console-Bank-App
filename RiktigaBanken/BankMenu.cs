@@ -43,20 +43,26 @@ namespace RiktigaBanken
                             Console.Write("Personnummer (YYMMDDNNNN): ");
                             long pnr;
                             long.TryParse(Console.ReadLine(), out pnr);
-                            var cCheck = BankLogic.customerList.Find(c => c.customerPNR == pnr);
+                            Customer cCheck = BankLogic.customerList.Find(c => c.customerPNR == pnr);
+                            long PNRcheck;
+                            if (cCheck != null)
+                            {
+                                PNRcheck = cCheck.customerPNR;
+                            } else
+                            {
+                                PNRcheck = 99999999999;
+                            }
                             string pnrCheck = pnr.ToString();
                             if (fname != null && lname != null && pnrCheck.Length == 10)
                             {
-                                
-                                if (cCheck.customerPNR != pnr)
+                                if (PNRcheck != pnr)
                                 {
                                     blogic.AddCustomerAsync(fname, lname, pnr);
                                     Console.WriteLine("Kund tillagd: " + fname + lname);
                                     Thread.Sleep(3000);
                                     check = false;
 
-                                }
-                                else
+                                } else
                                     Console.WriteLine("Kund finns redan.");
                                     check = false;
                             }
